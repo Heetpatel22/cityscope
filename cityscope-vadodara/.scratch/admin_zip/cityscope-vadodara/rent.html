@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Rent Property — Cityscope Vadodara</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <button class="icon-btn" id="backBtn"></button>
+    <div class="brand">
+      <div class="brand-name">CITYSCOPE</div>
+      <div class="brand-sub">VADODARA</div>
+    </div>
+    <button class="icon-btn" id="filterBtn"></button>
+  </div>
+
+  <div class="page-title-bar">
+    <h1>Properties for Rent</h1>
+    <p id="resultCount"></p>
+  </div>
+
+  <div class="search-fields" style="padding:4px 18px 10px;">
+    <div class="field" style="border:1.5px solid var(--gray-200);border-radius:12px;padding:10px 14px;">
+      <span class="ic"></span>
+      <div class="meta">
+        <label>Location</label>
+        <select id="fLocation"><option value="">All areas</option></select>
+      </div>
+      <span class="chev"></span>
+    </div>
+  </div>
+
+  <div class="prop-list" id="listWrap"></div>
+
+  <nav class="bottom-nav" id="bottom-nav"></nav>
+</div>
+
+<script src="js/icons.js"></script>
+<script src="js/data.js"></script>
+<script src="js/nav.js"></script>
+<script>
+  mountBottomNav("rent");
+  document.getElementById("backBtn").innerHTML = ICON.back;
+  document.getElementById("backBtn").onclick = ()=> window.location.href="index.html";
+  document.getElementById("filterBtn").innerHTML = ICON.search;
+  document.querySelector(".field .ic").innerHTML = ICON.pin;
+  document.querySelector(".field .chev").innerHTML = ICON.chevDown;
+
+  const locs = [...new Set(DB.all().map(p=>p.locality))];
+  document.getElementById("fLocation").innerHTML += locs.map(l=>`<option>${l}</option>`).join("");
+
+  const qs = new URLSearchParams(window.location.search);
+  if(qs.get("loc")) document.getElementById("fLocation").value = qs.get("loc");
+
+  function applyFilters(){
+    let list = DB.all().filter(p=>p.forType==="Rent");
+    const loc = document.getElementById("fLocation").value;
+    if(loc) list = list.filter(p=>p.locality===loc);
+    const ptype = qs.get("ptype");
+    if(ptype) list = list.filter(p=>p.type===ptype);
+    const budget = qs.get("budget");
+    if(budget){
+      const [min,max] = budget.split("-").map(Number);
+      list = list.filter(p=>p.price>=min && p.price<=max);
+    }
+    document.getElementById("resultCount").textContent = `${list.length} propert${list.length===1?'y':'ies'} found`;
+    document.getElementById("listWrap").innerHTML = list.length ? list.map(p=>propCardHTML(p,true)).join("") : `
+      <div class="empty">
+        <div class="ic-wrap">${ICON.search}</div>
+        <h3>No properties found</h3>
+        <p>Try adjusting your filters or explore all listings.</p>
+      </div>`;
+    wireFavButtons();
+  }
+  document.getElementById("fLocation").addEventListener("change", applyFilters);
+  applyFilters();
+</script>
+</body>
+</html>

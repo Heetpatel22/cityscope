@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Add Broker — Admin Portal</title>
+<link rel="stylesheet" href="css/style.css">
+<script>
+  if (localStorage.getItem('cs_user_role') !== 'admin') {
+    window.location.href = 'account.html';
+  }
+</script>
+</head>
+<body>
+<div class="app" style="padding-bottom:20px;">
+  <div class="topbar">
+    <a href="admin.html" class="icon-btn" id="backBtn"></a>
+    <span>Add Broker</span>
+    <div style="width:40px;"></div>
+  </div>
+
+  <div class="section" style="margin-top:60px;">
+    <form id="brokerForm">
+      <div class="field">
+        <label>Full Name</label>
+        <input type="text" id="bName" required placeholder="e.g. John Doe">
+      </div>
+      <div class="field" style="margin-top:15px;">
+        <label>Years of Experience</label>
+        <input type="text" id="bExp" required placeholder="e.g. 5 Years">
+      </div>
+      <div class="field" style="margin-top:15px;">
+        <label>Expertise Field</label>
+        <input type="text" id="bExpertise" required placeholder="e.g. Luxury Villas">
+      </div>
+      <div class="field" style="margin-top:15px;">
+        <label>Phone Number</label>
+        <input type="text" id="bPhone" required placeholder="e.g. +919876543210">
+      </div>
+      <div class="field" style="margin-top:15px;">
+        <label>Photo URL</label>
+        <input type="url" id="bPhoto" required placeholder="https://image-url.com">
+      </div>
+      <button type="submit" class="btn-fill" style="width:100%;margin-top:20px;">Save Broker</button>
+    </form>
+  </div>
+</div>
+<script src="js/icons.js"></script>
+<script src="js/data.js"></script>
+<script>
+  document.getElementById("backBtn").innerHTML = ICON.back;
+  document.getElementById("brokerForm").addEventListener("submit", (e)=>{
+    e.preventDefault();
+    const broker = {
+      id: "b" + Date.now(),
+      name: document.getElementById("bName").value,
+      experience: document.getElementById("bExp").value,
+      expertise: document.getElementById("bExpertise").value,
+      phone: document.getElementById("bPhone").value,
+      photo: document.getElementById("bPhoto").value,
+    };
+    DB.addBroker(broker);
+    alert("Broker added successfully!");
+    window.location.href = "admin.html";
+  });
+</script>
+</body>
+</html>

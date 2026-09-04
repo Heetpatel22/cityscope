@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Property Details — Cityscope Vadodara</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app" id="app" style="padding-bottom:90px;">
+
+  <div class="topbar" style="position:absolute;top:0;left:0;right:0;background:linear-gradient(180deg,rgba(0,0,0,.45),transparent);">
+    <button class="icon-btn" id="backBtn"></button>
+    <span></span>
+    <div class="topbar-actions">
+      <button class="icon-btn" id="favBtn"></button>
+      <button class="icon-btn" id="shareBtn"></button>
+    </div>
+  </div>
+
+  <div class="gallery" id="gallery">
+    <img id="mainImg" src="" alt="">
+    <span class="sale-tag" id="saleTag"></span>
+    <span class="counter" id="counter"></span>
+  </div>
+
+  <div class="detail-card">
+    <div class="detail-head">
+      <div>
+        <h1 id="pTitle"></h1>
+        <div class="loc"><span id="pLoc"></span></div>
+      </div>
+      <div class="price-block">
+        <div class="price" id="pPrice"></div>
+        <div class="unit" id="pUnit"></div>
+        <div class="neg" id="pNeg"></div>
+      </div>
+    </div>
+
+    <div class="chip-row" id="chipRow"></div>
+
+    <div class="spec-grid" id="specGrid"></div>
+
+    <div id="brokerPanel"></div>
+
+    <div class="panel" id="agentPanel">
+      <h4>Contact Agent</h4>
+      <div class="agent-row">
+        <div class="avatar"></div>
+        <div class="info">
+          <div class="name" id="agentName"><span></span></div>
+          <div class="rating" id="agentRating"></div>
+        </div>
+      </div>
+      <div class="agent-actions">
+        <button class="btn-outline" id="callBtn"></button>
+        <button class="btn-fill wa" id="waBtn"></button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h4>Property Description</h4>
+      <p class="desc-text clamp" id="descText"></p>
+      <button class="see-more" id="seeMoreBtn">See More</button>
+    </div>
+
+    <div class="panel">
+      <h4>Property Amenities</h4>
+      <div class="amenity-grid" id="amenityGrid"></div>
+    </div>
+
+    <div class="panel">
+      <h4>Location</h4>
+      <p style="font-size:12.5px;color:var(--gray-600);" id="mapLoc"></p>
+      <div class="map-box" id="mapBox"><span class="pin"></span></div>
+      <button class="btn-fill" id="viewMapBtn" style="width:100%;margin-top:12px;"></button>
+    </div>
+
+    <div class="section" style="padding:0;margin-top:6px;">
+      <div class="section-head">
+        <h2>Similar Properties</h2>
+        <a href="buy.html">View All</a>
+      </div>
+      <div class="prop-row hide-scroll" id="similarRow"></div>
+    </div>
+  </div>
+
+  <div class="bottom-actions">
+    <button class="btn-outline" id="saveBtn"></button>
+    <button class="btn-fill" id="contactBtn"></button>
+  </div>
+</div>
+
+<script src="js/icons.js"></script>
+<script src="js/data.js"></script>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id") || "p1";
+  const p = DB.get(id) || DB.all()[0];
+  let imgIndex = 0;
+
+  document.getElementById("backBtn").innerHTML = ICON.back;
+  document.getElementById("shareBtn").innerHTML = ICON.share;
+  document.getElementById("backBtn").onclick = ()=> history.length>1 ? history.back() : location.href="index.html";
+  document.getElementById("shareBtn").onclick = async ()=>{
+    const url = window.location.href;
+    if(navigator.share){ try{ await navigator.share({title:p.title, url}); }catch(e){} }
+    else { navigator.clipboard?.writeText(url); toast("Link copied to clipboard"); }
+  };
+
+  function renderFav(){
+    const saved = DB.isSaved(p.id);
+    document.getElementById("favBtn").innerHTML = saved ? ICON.heartFill : ICON.heart;
+    document.getElementById("favBtn").classList.toggle("active", saved);
+    document.getElementById("saveBtn").innerHTML = (saved?ICON.heartFill:ICON.heart) + (saved?" Saved":" Save Property");
+  }
+  document.getElementById("favBtn").onclick = ()=>{ DB.toggleSave(p.id); renderFav(); toast(DB.isSaved(p.id)?"Saved to your favourites":"Removed from favourites"); };
+  document.getElementById("saveBtn").onclick = document.getElementById("favBtn").onclick;
+  renderFav();
+
+  function setImage(i){
+    imgIndex = (i+p.images.length)%p.images.length;
+    document.getElementById("mainImg").src = p.images[imgIndex];
+    document.getElementById("counter").innerHTML = `${ICON.cam} ${imgIndex+1}/${p.images.length}`;
+  }
+  setImage(0);
+  document.getElementById("gallery").addEventListener("click",()=> setImage(imgIndex+1));
+
+  document.getElementById("saleTag").textContent = p.forType === "Rent" ? "For Rent" : "For Sale";
+  document.title = p.title + " — Cityscope Vadodara";
+  document.getElementById("pTitle").textContent = p.title;
+  document.getElementById("pLoc").textContent = p.fullLocation;
+  document.querySelector(".detail-head .loc").innerHTML = ICON.pin + `<span>${p.fullLocation}</span>`;
+  document.getElementById("pPrice").textContent = p.priceLabel;
+  document.getElementById("pUnit").textContent = p.priceUnit || "Total Price";
+  document.getElementById("pNeg").textContent = p.negotiable ? "Negotiable" : "Fixed Price";
+
+  const chips = [
+    {t:p.type, ic:ICON.home},
+    {t:p.forType==="Rent"?"For Rent":"For Sale", ic:ICON.rupee},
+  ];
+  if(p.isNew) chips.push({t:"New Property", ic:ICON.star});
+  let chipHTML = chips.map(c=>`<span class="chip">${c.ic}${c.t}</span>`).join("");
+  if(p.verified) chipHTML += `<span class="chip verified">${ICON.shield}Verified</span>`;
+  document.getElementById("chipRow").innerHTML = chipHTML;
+
+  const specs = [];
+  if(p.bedrooms) specs.push({ic:ICON.bed, v:p.bedrooms, l:"Bedrooms"});
+  if(p.bathrooms) specs.push({ic:ICON.bath, v:p.bathrooms, l:"Bathrooms"});
+  specs.push({ic:ICON.area, v:fmtArea(p.area), l:"Sq.Ft"});
+  if(p.parking) specs.push({ic:ICON.car, v:p.parking, l:"Car Parking"});
+  specs.push({ic:ICON.compass, v:p.facing, l:"Facing"});
+  document.getElementById("specGrid").innerHTML = specs.map(s=>`
+    <div class="spec"><span class="ic-wrap">${s.ic}</span><b>${s.v}</b><span>${s.l}</span></div>`).join("");
+
+  const broker = p.brokerId ? DB.getBroker(p.brokerId) : null;
+
+  if(broker){
+    // Show the assigned broker's card instead of the generic agent panel
+    document.getElementById("agentPanel").style.display = "none";
+    document.getElementById("brokerPanel").innerHTML = brokerCardHTML(broker);
+    document.querySelector("[data-broker-call]").onclick = ()=> window.location.href = `tel:${broker.phone}`;
+    document.querySelector("[data-broker-wa]").onclick = function(){
+      const [phone, name] = this.dataset.brokerWa.split("|");
+      const msg = encodeURIComponent(`Hi ${name}, I'm interested in "${p.title}" in ${p.locality}, Vadodara listed on Cityscope Vadodara.`);
+      window.open(`https://wa.me/${phone.replace('+','')}?text=${msg}`,"_blank");
+    };
+    document.getElementById("contactBtn").innerHTML = ICON.phone + " Contact Broker";
+    document.getElementById("contactBtn").onclick = ()=> window.location.href = `tel:${broker.phone}`;
+  } else {
+    document.querySelector(".agent-row .avatar").innerHTML = ICON.user;
+    document.getElementById("agentName").innerHTML = p.agent + " " + ICON.shield;
+    document.getElementById("agentRating").innerHTML = `${ICON.star} ${p.rating} (${p.reviews} Reviews)`;
+
+    document.getElementById("callBtn").innerHTML = ICON.phone + " Call Now";
+    document.getElementById("callBtn").onclick = ()=> window.location.href = `tel:${p.phone}`;
+    document.getElementById("waBtn").innerHTML = ICON.whatsapp + " WhatsApp";
+    document.getElementById("waBtn").onclick = ()=>{
+      const msg = encodeURIComponent(`Hi, I'm interested in "${p.title}" in ${p.locality}, Vadodara listed on Cityscope Vadodara.`);
+      window.open(`https://wa.me/${p.phone.replace('+','')}?text=${msg}`,"_blank");
+    };
+    document.getElementById("contactBtn").innerHTML = ICON.phone + " Contact Agent";
+    document.getElementById("contactBtn").onclick = document.getElementById("callBtn").onclick;
+  }
+
+  document.getElementById("descText").textContent = p.description;
+  document.getElementById("seeMoreBtn").onclick = function(){
+    const d = document.getElementById("descText");
+    const expanded = d.classList.toggle("clamp") === false;
+    this.innerHTML = expanded ? "See Less " + ICON.chevUp : "See More " + ICON.chevDown;
+  };
+  document.getElementById("seeMoreBtn").innerHTML = "See More " + ICON.chevDown;
+
+  document.getElementById("amenityGrid").innerHTML = p.amenities.map(a=>`
+    <div class="amenity"><span class="ic-wrap">${ICON[AMENITY_ICON[a]]||ICON.shield}</span>${a}</div>`).join("");
+
+  document.getElementById("mapLoc").textContent = p.fullLocation;
+  document.querySelector(".map-box .pin").innerHTML = ICON.pin.replace('width="13" height="13"','width="26" height="26"');
+  document.getElementById("mapBox").innerHTML += `<div class="road" style="left:0;right:0;top:45%;height:8px;"></div><div class="road" style="left:30%;top:0;bottom:0;width:8px;"></div>`;
+  document.getElementById("viewMapBtn").innerHTML = ICON.map + " View on Map";
+  document.getElementById("viewMapBtn").onclick = ()=>{
+    window.open(`https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lng}`,"_blank");
+  };
+
+  const similar = DB.all().filter(x=>x.id!==p.id && x.type===p.type).slice(0,4);
+  const fallback = similar.length ? similar : DB.all().filter(x=>x.id!==p.id).slice(0,4);
+  document.getElementById("similarRow").innerHTML = fallback.map(x=>propCardHTML(x,false)).join("");
+  wireFavButtons();
+</script>
+</body>
+</html>

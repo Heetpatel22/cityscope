@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Admin Login — Cityscope Vadodara</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="admin-login-wrap">
+  <div class="ic-wrap" id="lockIc"></div>
+  <h1>Admin Login</h1>
+  <p>Sign in to manage listings and brokers for Cityscope Vadodara.</p>
+
+  <div class="form-wrap">
+    <div class="f-group">
+      <label>Admin Password</label>
+      <input class="input" id="fPass" type="password" placeholder="Enter admin password">
+    </div>
+    <p class="admin-error" id="loginError">Incorrect password. Please try again.</p>
+    <button class="btn-fill" id="loginBtn">Login</button>
+  </div>
+
+  <p style="font-size:11px;color:var(--gray-400);margin-top:18px;"><a href="index.html" style="color:var(--gray-400);">← Back to site</a></p>
+</div>
+
+<script src="js/icons.js"></script>
+<script src="js/data.js"></script>
+<script>
+  document.getElementById("lockIc").innerHTML = ICON.lock;
+
+  // If already logged in, go straight to the dashboard.
+  if(DB.isAdmin()){ window.location.href = "admin.html"; }
+
+  function attemptLogin(){
+    const pass = document.getElementById("fPass").value;
+    if(DB.loginAdmin(pass)){
+      window.location.href = "admin.html";
+    } else {
+      document.getElementById("loginError").classList.add("show");
+    }
+  }
+  document.getElementById("loginBtn").onclick = attemptLogin;
+  document.getElementById("fPass").addEventListener("keydown", (e)=>{ if(e.key==="Enter") attemptLogin(); });
+</script>
+</body>
+</html>

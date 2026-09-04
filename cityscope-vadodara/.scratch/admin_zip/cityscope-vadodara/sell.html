@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Sell Property — Cityscope Vadodara</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app" style="padding-bottom:110px;">
+
+  <!-- Header shared across steps -->
+  <div class="topbar" id="wizTopbar" style="background:linear-gradient(135deg,var(--red-900),var(--red));">
+    <button class="icon-btn" id="backBtn"></button>
+    <span id="wizTitle" style="font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;">List Property</span>
+    <span style="width:38px;"></span>
+  </div>
+
+  <!-- STEP 0: landing / type select -->
+  <section class="step-panel active" data-step="0">
+    <div class="sell-hero">
+      <h1>List a Property on Cityscope</h1>
+    </div>
+    <div class="sell-card-float">
+      <h4>Why list with Cityscope?</h4>
+      <div class="perk"><span class="ic-wrap"></span><div><b>High Visibility</b><span>Your property seen by 10K+ active buyers</span></div></div>
+      <div class="perk"><span class="ic-wrap"></span><div><b>Verified Buyers</b><span>Connect only with genuine, serious buyers</span></div></div>
+      <div class="perk"><span class="ic-wrap"></span><div><b>Best Price</b><span>Get the best price with smart insights</span></div></div>
+      <div class="perk"><span class="ic-wrap"></span><div><b>Hassle Free</b><span>Simple process with expert support</span></div></div>
+    </div>
+
+    <div class="form-wrap" style="padding-top:24px;">
+      <h4 style="font-size:14px;margin-bottom:14px;">How it works?</h4>
+      <div class="why-list" style="margin-bottom:22px;">
+        <div class="why-item"><span></span>Add Details — Add property information</div>
+        <div class="why-item"><span></span>Upload Media — Upload photos & videos</div>
+        <div class="why-item"><span></span>Set Price — Set expected price</div>
+        <div class="why-item"><span></span>Go Live — Property live for buyers</div>
+      </div>
+
+      <h4 style="font-size:14px;margin-bottom:4px;">Let's get started</h4>
+      <p style="font-size:12px;color:var(--gray-600);margin-bottom:12px;">What type of property are you selling?</p>
+      <div class="type-grid" id="typeGrid"></div>
+    </div>
+    <div class="sticky-cta"><button class="btn-fill" id="cta0" disabled style="opacity:.5;">Continue</button></div>
+  </section>
+
+  <!-- STEP 1: location -->
+  <section class="step-panel" data-step="1">
+    <div class="step-progress" id="progress1"></div>
+    <div class="step-label">Sell Property · Step 2 of 6</div>
+    <div class="form-wrap">
+      <h4 style="font-size:16px;margin-bottom:2px;">Location Details</h4>
+      <p style="font-size:12px;color:var(--gray-600);margin-bottom:16px;">Where is your property located?</p>
+
+      <div class="f-group">
+        <label>City</label>
+        <select class="input" id="fCity">
+          <option>Vadodara</option><option>Ahmedabad</option><option>Surat</option><option>Anand</option>
+        </select>
+      </div>
+      <div class="f-group">
+        <label>Locality / Area</label>
+        <input class="input" id="fLocality" placeholder="e.g. Alkapuri" list="localityList">
+        <datalist id="localityList">
+          <option>Alkapuri</option><option>Gotri</option><option>Manjalpur</option><option>Sayajigunj</option><option>Waghodia Road</option><option>Vasna-Bhayli Road</option><option>Karelibaug</option>
+        </datalist>
+      </div>
+      <div class="f-group">
+        <label>Project / Society (Optional)</label>
+        <input class="input" id="fProject" placeholder="e.g. Orchid Harmony">
+      </div>
+      <div class="f-group">
+        <label>Full Address</label>
+        <textarea class="input" id="fAddress" rows="2" placeholder="House / flat no, street, landmark"></textarea>
+      </div>
+      <div class="map-box" id="mapBox1"><span class="pin"></span></div>
+      <button class="use-loc" id="useLocBtn"></button>
+    </div>
+    <div class="sticky-cta"><button class="btn-fill" id="cta1">Save &amp; Continue</button></div>
+  </section>
+
+  <!-- STEP 2: basic details -->
+  <section class="step-panel" data-step="2">
+    <div class="step-progress" id="progress2"></div>
+    <div class="step-label">Sell Property · Step 3 of 6</div>
+    <div class="form-wrap">
+      <h4 style="font-size:16px;margin-bottom:2px;">Basic Details</h4>
+      <p style="font-size:12px;color:var(--gray-600);margin-bottom:16px;">Tell us more about your property</p>
+
+      <div class="f-group">
+        <label>Property Type</label>
+        <select class="input" id="fPropType"></select>
+      </div>
+      <div class="row-2">
+        <div class="f-group">
+          <label>Built-up Area</label>
+          <div class="unit-input"><input class="input" id="fBuiltUp" type="number" placeholder="1500"><span>Sq.Ft.</span></div>
+        </div>
+        <div class="f-group">
+          <label>Carpet Area (Optional)</label>
+          <div class="unit-input"><input class="input" id="fCarpet" type="number" placeholder="1200"><span>Sq.Ft.</span></div>
+        </div>
+      </div>
+      <div class="row-2">
+        <div class="f-group">
+          <label>Bedrooms</label>
+          <div class="stepper-input"><button data-step-target="bedrooms" data-dir="-1">−</button><span class="val" id="valBedrooms">3</span><button data-step-target="bedrooms" data-dir="1">+</button></div>
+        </div>
+        <div class="f-group">
+          <label>Bathrooms</label>
+          <div class="stepper-input"><button data-step-target="bathrooms" data-dir="-1">−</button><span class="val" id="valBathrooms">3</span><button data-step-target="bathrooms" data-dir="1">+</button></div>
+        </div>
+      </div>
+      <div class="row-2">
+        <div class="f-group">
+          <label>Floor No.</label>
+          <input class="input" id="fFloorNo" type="number" placeholder="5">
+        </div>
+        <div class="f-group">
+          <label>Total Floors</label>
+          <input class="input" id="fTotalFloors" type="number" placeholder="12">
+        </div>
+      </div>
+      <div class="f-group">
+        <label>Age of Property</label>
+        <select class="input" id="fAge">
+          <option>Under Construction</option><option>0 - 1 Year</option><option selected>2 - 5 Years</option><option>5 - 10 Years</option><option>10+ Years</option>
+        </select>
+      </div>
+      <div class="f-group">
+        <label>Furnishing Status</label>
+        <div class="pill-select" id="furnishPills">
+          <button data-val="Unfurnished">Unfurnished</button>
+          <button data-val="Semi-Furnished" class="active">Semi-Furnished</button>
+          <button data-val="Furnished">Furnished</button>
+        </div>
+      </div>
+    </div>
+    <div class="sticky-cta"><button class="btn-fill" id="cta2">Save &amp; Continue</button></div>
+  </section>
+
+  <!-- STEP 3: photos -->
+  <section class="step-panel" data-step="3">
+    <div class="step-progress" id="progress3"></div>
+    <div class="step-label">Sell Property · Step 4 of 6</div>
+    <div class="form-wrap">
+      <h4 style="font-size:16px;margin-bottom:2px;">Add Photos &amp; Videos</h4>
+      <p style="font-size:12px;color:var(--gray-600);margin-bottom:6px;">Show your property in the best way</p>
+      <div class="photo-grid" id="photoGrid"></div>
+      <p class="hint" id="photoHint">0 / 20 photos added — add at least 3 for best results</p>
+      <button class="use-loc" id="addVideoBtn" style="margin-top:14px;"></button>
+    </div>
+    <div class="sticky-cta"><button class="btn-fill" id="cta3">Save &amp; Continue</button></div>
+  </section>
+
+  <!-- STEP 4: price -->
+  <section class="step-panel" data-step="4">
+    <div class="step-progress" id="progress4"></div>
+    <div class="step-label">Sell Property · Step 5 of 6</div>
+    <div class="form-wrap">
+      <h4 style="font-size:16px;margin-bottom:2px;">Set Price</h4>
+      <p style="font-size:12px;color:var(--gray-600);margin-bottom:16px;">Set the right price to attract buyers</p>
+
+      <div class="f-group">
+        <label>Assign Broker</label>
+        <select class="input" id="fBroker"></select>
+        <p class="hint">This broker's card will be shown to buyers on the property page</p>
+      </div>
+
+      <div class="f-group">
+        <label>Expected Price</label>
+        <div class="input-icon"><span class="ic"></span><input class="input" id="fPrice" type="number" placeholder="8500000"></div>
+      </div>
+      <div class="price-insight" id="priceInsight">
+        <span class="ic-wrap"></span>
+        <div style="flex:1;">
+          <b>Price Insights — Based on similar properties nearby</b>
+          <div class="figs"><div>Recommended Range<span id="insRange">—</span></div><div>Avg Price / Sq.Ft<span id="insAvg">—</span></div></div>
+        </div>
+      </div>
+
+      <div class="f-group" style="margin-top:20px;">
+        <div class="toggle-row">
+          <div><label style="margin-bottom:2px;">Price Negotiable?</label><p class="hint" style="margin-top:0;">Allow buyers to negotiate the price</p></div>
+          <button class="switch on" id="negToggle"><span class="knob"></span></button>
+        </div>
+      </div>
+      <div class="f-group">
+        <label>Preferred Contact Number</label>
+        <input class="input" id="fContact" placeholder="98765 43210" maxlength="10" inputmode="numeric">
+      </div>
+      <div class="f-group">
+        <label>Add Amenities</label>
+        <p class="hint" style="margin:0 0 8px;">Select amenities available in your property</p>
+        <div class="amenity-select-grid" id="amenityGrid"></div>
+      </div>
+      <div class="f-group">
+        <label>Add Description (Optional)</label>
+        <textarea class="input" id="fDesc" rows="4" maxlength="500" placeholder="Describe your property..."></textarea>
+        <p class="hint" id="descCount">0/500</p>
+      </div>
+    </div>
+    <div class="sticky-cta"><button class="btn-fill" id="cta4">Save &amp; Continue</button></div>
+  </section>
+
+  <!-- STEP 5: review -->
+  <section class="step-panel" data-step="5">
+    <div class="step-progress" id="progress5"></div>
+    <div class="step-label">Sell Property · Step 6 of 6</div>
+    <div class="form-wrap">
+      <h4 style="font-size:16px;margin-bottom:2px;">Review Your Property Details</h4>
+      <p style="font-size:12px;color:var(--gray-600);margin-bottom:4px;">Please review all details before publishing</p>
+
+      <div class="review-card">
+        <div class="review-top">
+          <img id="reviewThumb" src="" alt="">
+          <div style="flex:1;">
+            <b id="reviewTitle" style="font-size:13.5px;"></b>
+            <p style="font-size:11.5px;color:var(--gray-600);margin-top:3px;" id="reviewLoc"></p>
+          </div>
+          <a href="#" class="edit" data-goto="1">Edit</a>
+        </div>
+        <div class="review-line"><span>Price</span><span id="rvPrice"></span></div>
+        <div class="review-line"><span>Built-up Area</span><span id="rvBuiltUp"></span></div>
+        <div class="review-line"><span>Carpet Area</span><span id="rvCarpet"></span></div>
+        <div class="review-line"><span>Bedrooms</span><span id="rvBed"></span></div>
+        <div class="review-line"><span>Bathrooms</span><span id="rvBath"></span></div>
+        <div class="review-line"><span>Floor</span><span id="rvFloor"></span></div>
+        <div class="review-line"><span>Furnishing</span><span id="rvFurnish"></span></div>
+        <div class="review-line"><span>Age of Property</span><span id="rvAge"></span></div>
+        <div class="review-line"><span>Amenities</span><span id="rvAmenities"></span></div>
+        <div class="review-line"><span>Assigned Broker</span><span id="rvBroker"></span></div>
+      </div>
+
+      <div class="next-steps">
+        <h4 style="font-size:13.5px;margin-bottom:10px;">What happens next?</h4>
+        <div class="next-item"><span class="num">1</span><p>Your property will be live for buyers within minutes.</p></div>
+        <div class="next-item"><span class="num">2</span><p>Interested buyers will contact you directly.</p></div>
+        <div class="next-item"><span class="num">3</span><p>Our team may call you for verification.</p></div>
+      </div>
+    </div>
+    <div class="sticky-cta">
+      <button class="btn-fill" id="publishBtn"></button>
+      <p class="fine" id="fineprint"></p>
+    </div>
+  </section>
+
+</div>
+
+<script src="js/icons.js"></script>
+<script src="js/data.js"></script>
+<script src="js/sell.js"></script>
+</body>
+</html>

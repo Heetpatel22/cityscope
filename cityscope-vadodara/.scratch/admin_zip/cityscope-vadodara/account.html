@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Account — Cityscope Vadodara</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <button class="icon-btn" id="backBtn"></button>
+    <div class="brand">
+      <div class="brand-name">CITYSCOPE</div>
+      <div class="brand-sub">VADODARA</div>
+    </div>
+    <span style="width:38px;"></span>
+  </div>
+
+  <div class="account-card">
+    <div class="avatar" id="avatarInit">G</div>
+    <div>
+      <h3 style="font-size:15px;">Guest User</h3>
+      <p style="font-size:12px;color:var(--gray-600);margin-top:3px;">Sign in to manage your listings & saved properties</p>
+    </div>
+  </div>
+
+  <div class="account-list" style="margin-top:8px;">
+    <a href="saved.html"><span class="ic-wrap" id="ic3"></span>Saved Properties<span class="chev" id="cv3"></span></a>
+  </div>
+
+  <div class="account-list" style="margin-top:14px;">
+    <a href="#"><span class="ic-wrap" id="ic4"></span>Notifications<span class="chev" id="cv4"></span></a>
+    <a href="#"><span class="ic-wrap" id="ic5"></span>Settings<span class="chev" id="cv5"></span></a>
+    <a href="#"><span class="ic-wrap" id="ic6"></span>Help & Support<span class="chev" id="cv6"></span></a>
+  </div>
+
+  <div class="account-list" style="margin-top:14px;">
+    <a href="#" id="logoutLink" style="color:var(--red);"><span class="ic-wrap" id="ic7" style="background:var(--red-100);"></span>Log Out</a>
+  </div>
+
+  <p style="text-align:center;font-size:11px;color:var(--gray-400);margin:22px 18px 100px;">
+    <a href="admin-login.html" style="color:var(--gray-400);text-decoration:underline;">Admin Login</a>
+  </p>
+
+  <nav class="bottom-nav" id="bottom-nav"></nav>
+</div>
+
+<script src="js/icons.js"></script>
+<script src="js/data.js"></script>
+<script src="js/nav.js"></script>
+<script>
+  mountBottomNav("account");
+  document.getElementById("backBtn").innerHTML = ICON.back;
+  document.getElementById("backBtn").onclick = ()=> window.location.href="index.html";
+  document.getElementById("ic3").innerHTML = ICON.heart;
+  document.getElementById("ic4").innerHTML = ICON.bell;
+  document.getElementById("ic5").innerHTML = ICON.settings;
+  document.getElementById("ic6").innerHTML = ICON.help;
+  document.getElementById("ic7").innerHTML = ICON.logout;
+  ["cv3","cv4","cv5","cv6"].forEach(id=>document.getElementById(id).innerHTML = ICON.chevRight);
+
+  document.getElementById("logoutLink").onclick = (e)=>{ e.preventDefault(); toast("You're browsing as a guest"); };
+</script>
+</body>
+</html>

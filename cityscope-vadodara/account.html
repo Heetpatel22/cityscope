@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Account — Cityscope Vadodara</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <div class="app">
+    <div class="topbar">
+      <button class="icon-btn" id="backBtn"></button>
+      <div class="brand">
+        <div class="brand-name">CITYSCOPE</div>
+        <div class="brand-sub">VADODARA</div>
+      </div>
+      <span style="width:38px;"></span>
+    </div>
+
+    <div id="unauthSection" style="padding: 40px 20px; text-align: center; display: none;">
+      <div style="margin-bottom:30px;">
+        <h2 style="font-size:24px; margin-bottom:10px; color:var(--dark);">Welcome to Cityscope</h2>
+        <p style="color:var(--gray-600); font-size:14px; line-height:1.5;">Please log in or register to manage your
+          properties, saved listings, and preferences.</p>
+      </div>
+      <button class="btn-fill" id="showLoginBtn"
+        style="width:100%; margin-bottom:15px; padding:14px; font-size:16px;">Log In</button>
+      <button class="btn-outline" id="showRegisterBtn"
+        style="width:100%; border: 1.5px solid var(--primary); color: var(--primary); background: transparent; padding: 14px; border-radius: 8px; font-weight: 600; font-size:16px; cursor: pointer;">Register</button>
+    </div>
+
+    <div id="profileSection" style="display:none;">
+      <div class="account-card" id="accountCard">
+        <div class="avatar" id="avatarInit">G</div>
+        <div>
+          <h3 style="font-size:15px;" id="accountName">Guest User</h3>
+          <p style="font-size:12px;color:var(--gray-600);margin-top:3px;" id="accountSub">Sign in to manage your account
+          </p>
+        </div>
+      </div>
+
+      <div class="account-list" style="margin-top:8px;" id="userLinks">
+        <a href="saved.html"><span class="ic-wrap" id="ic3"></span>Saved Properties<span class="chev"
+            id="cv3"></span></a>
+      </div>
+
+      <div class="account-list" style="margin-top:14px;">
+        <a href="#"><span class="ic-wrap" id="ic4"></span>Notifications<span class="chev" id="cv4"></span></a>
+        <a href="#"><span class="ic-wrap" id="ic5"></span>Settings<span class="chev" id="cv5"></span></a>
+        <a href="#"><span class="ic-wrap" id="ic6"></span>Help & Support<span class="chev" id="cv6"></span></a>
+      </div>
+
+      <div class="account-list" style="margin-top:14px;">
+        <a href="#" id="logoutLink" style="color:var(--red);"><span class="ic-wrap" id="ic7"
+            style="background:var(--red-100);"></span>Log Out</a>
+      </div>
+    </div>
+
+    <div id="registerSection" style="padding: 30px 20px; display: none;">
+      <h3 style="margin-bottom:20px; font-size:22px; text-align:center;">Register</h3>
+      <div class="field">
+        <label>Full Name</label>
+        <input type="text" id="regName" placeholder="e.g. John Doe" class="input">
+      </div>
+      <div class="field" style="margin-top:16px;">
+        <label>Mobile Number</label>
+        <input type="text" id="regMobile" placeholder="e.g. 9999999999" class="input">
+      </div>
+      <div class="field" style="margin-top:16px;">
+        <label>Password</label>
+        <input type="password" id="regPwd" placeholder="Create a password" class="input">
+      </div>
+      <button class="btn-fill" id="doRegisterBtn" style="width:100%; margin-top:24px;">Create Account &rarr;</button>
+      <div style="text-align:center; margin-top:20px; font-size:13px;">
+        Already have an account? <a href="#" id="backToLoginBtn" style="color:var(--primary); font-weight:600;">Log
+          In</a>
+      </div>
+    </div>
+
+    <div id="loginSection" style="padding: 30px 20px; display: none;">
+      <h3 style="margin-bottom:20px; font-size:22px; text-align:center;">Sign In</h3>
+      <div class="field">
+        <label>Mobile Number</label>
+        <input type="text" id="loginMobile" placeholder="e.g. 9999999999" class="input">
+      </div>
+      <div class="field" style="margin-top:16px;">
+        <label>Password</label>
+        <input type="password" id="loginPwd" placeholder="Enter your password" class="input">
+      </div>
+      <div style="display:flex; justify-content:space-between; margin-top:16px; font-size:13px;">
+        <label style="display:flex; align-items:center; gap:4px; color:var(--gray-600);">
+          <input type="checkbox"> Remember me
+        </label>
+        <a href="#" style="color:var(--dark); font-weight:600;">Forgot Password?</a>
+      </div>
+      <button class="btn-fill" id="doLoginBtn" style="width:100%; margin-top:24px;">Sign In &rarr;</button>
+      <div style="text-align:center; margin-top:20px; font-size:13px;">
+        Don't have an account? <a href="#" id="linkToRegisterBtn"
+          style="color:var(--primary); font-weight:600;">Register</a>
+      </div>
+    </div>
+
+
+
+    <nav class="bottom-nav" id="bottom-nav"></nav>
+  </div>
+
+  <script src="js/icons.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/nav.js"></script>
+  <script>
+    mountBottomNav("account");
+    document.getElementById("backBtn").innerHTML = ICON.back;
+    document.getElementById("backBtn").onclick = () => window.location.href = "index.html";
+    document.getElementById("ic3").innerHTML = ICON.heart;
+    document.getElementById("ic4").innerHTML = ICON.bell;
+    document.getElementById("ic5").innerHTML = ICON.settings;
+    document.getElementById("ic6").innerHTML = ICON.help;
+    document.getElementById("ic7").innerHTML = ICON.logout;
+    ["cv3", "cv4", "cv5", "cv6"].forEach(id => document.getElementById(id).innerHTML = ICON.chevRight);
+
+
+
+    document.getElementById("doLoginBtn").onclick = () => {
+      const mobile = document.getElementById("loginMobile").value.trim();
+      const pwd = document.getElementById("loginPwd").value;
+
+      if (!mobile || !pwd) {
+        toast("Please enter Mobile number and Password!");
+        return;
+      }
+
+      if (mobile === "9999999999") {
+        if (pwd === "ct123456") {
+          localStorage.setItem('cs_user_role', 'admin');
+          localStorage.setItem('cs_current_user_mobile', mobile);
+          window.location.href = "admin.html";
+        } else {
+          toast("Incorrect Admin Password.");
+        }
+      } else {
+        let users = JSON.parse(localStorage.getItem('cs_users_db') || '[]');
+        let user = users.find(u => u.mobile === mobile);
+        if (user && user.pwd === pwd) {
+          localStorage.setItem('cs_user_role', 'user');
+          localStorage.setItem('cs_current_user_mobile', mobile);
+          localStorage.setItem('cs_current_user_name', user.name);
+          window.location.reload();
+        } else {
+          toast("Invalid mobile number or password.");
+        }
+      }
+    };
+
+    document.getElementById("doRegisterBtn").onclick = () => {
+      const name = document.getElementById("regName").value.trim();
+      const mobile = document.getElementById("regMobile").value.trim();
+      const pwd = document.getElementById("regPwd").value;
+
+      if (!name || !mobile || !pwd) {
+        toast("Please fill all fields to register!");
+        return;
+      }
+
+      let users = JSON.parse(localStorage.getItem('cs_users_db') || '[]');
+      if (users.find(u => u.mobile === mobile)) {
+        toast("User with this mobile already exists. Please log in.");
+        return;
+      }
+
+      users.push({ name, mobile, pwd });
+      localStorage.setItem('cs_users_db', JSON.stringify(users));
+
+      toast("Account created! Please log in.");
+      showView("loginSection");
+    };
+
+    const showView = (viewId) => {
+      ["unauthSection", "loginSection", "registerSection", "profileSection"].forEach(id => {
+        let el = document.getElementById(id);
+        if (el) el.style.display = (id === viewId) ? "block" : "none";
+      });
+      window.scrollTo(0, 0);
+    };
+
+    if (document.getElementById("showLoginBtn")) document.getElementById("showLoginBtn").onclick = (e) => { e.preventDefault(); showView("loginSection"); };
+    if (document.getElementById("showRegisterBtn")) document.getElementById("showRegisterBtn").onclick = (e) => { e.preventDefault(); showView("registerSection"); };
+    if (document.getElementById("backToLoginBtn")) document.getElementById("backToLoginBtn").onclick = (e) => { e.preventDefault(); showView("loginSection"); };
+    if (document.getElementById("linkToRegisterBtn")) document.getElementById("linkToRegisterBtn").onclick = (e) => { e.preventDefault(); showView("registerSection"); };
+
+    // Check login state on load
+    if (localStorage.getItem('cs_user_role') === 'admin') {
+      document.getElementById("profileSection").style.display = "block";
+      document.getElementById("loginSection").style.display = "none";
+      document.getElementById("accountName").textContent = "Admin User";
+      document.getElementById("accountSub").textContent = "Tap to go to Admin Portal";
+      document.getElementById("avatarInit").textContent = "A";
+      document.getElementById("accountCard").onclick = () => {
+        window.location.href = "admin.html";
+      };
+
+      document.getElementById("logoutLink").onclick = (e) => {
+        e.preventDefault();
+        localStorage.removeItem('cs_user_role');
+        localStorage.removeItem('cs_current_user_mobile');
+        localStorage.removeItem('cs_current_user_name');
+        window.location.reload();
+      };
+    } else if (localStorage.getItem('cs_user_role') === 'user') {
+      document.getElementById("profileSection").style.display = "block";
+      document.getElementById("loginSection").style.display = "none";
+      document.getElementById("accountName").textContent = localStorage.getItem('cs_current_user_name') || "Logged-in User";
+      document.getElementById("accountSub").textContent = "Welcome back!";
+      document.getElementById("avatarInit").textContent = "U";
+      document.getElementById("accountCard").onclick = null;
+
+      document.getElementById("logoutLink").onclick = (e) => {
+        e.preventDefault();
+        localStorage.removeItem('cs_user_role');
+        localStorage.removeItem('cs_current_user_mobile');
+        localStorage.removeItem('cs_current_user_name');
+        window.location.reload();
+      };
+    } else {
+      // Unauthenticated Visitor
+      showView("unauthSection");
+    }
+
+    if(sessionStorage.getItem('cs_toast_msg') === 'login_to_save') {
+      setTimeout(() => toast("Please login/register to save a property"), 500);
+      sessionStorage.removeItem('cs_toast_msg');
+    }
+  </script>
+</body>
+
+</html>

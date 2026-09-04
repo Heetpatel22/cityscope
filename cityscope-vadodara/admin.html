@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Admin Portal — Cityscope Vadodara</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app" style="padding-bottom:40px;">
+  <div class="topbar admin-topbar">
+    <span style="width:38px;"></span>
+    <div class="brand">
+      <div class="brand-name">ADMIN PORTAL</div>
+      <div class="brand-sub">CITYSCOPE VADODARA</div>
+    </div>
+    <button class="icon-btn" id="logoutBtn" style="color:#fff;"></button>
+  </div>
+
+  <div class="admin-tabs">
+    <button class="admin-tab active" data-tab="overview">Overview</button>
+    <button class="admin-tab" data-tab="brokers">Brokers</button>
+    <button class="admin-tab" data-tab="listings">Listings</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <section class="admin-panel" data-panel="overview">
+    <div class="admin-stats">
+      <div class="admin-stat"><b id="statListings">0</b><span>Total Listings</span></div>
+      <div class="admin-stat"><b id="statBrokers">0</b><span>Total Brokers</span></div>
+    </div>
+    <div class="admin-section">
+      <a href="sell.html" class="btn-fill" style="width:100%;padding:14px;border-radius:12px;text-decoration:none;">
+        <span id="plusIc"></span> List a New Property
+      </a>
+      <p class="hint" style="margin-top:10px;text-align:center;">Only admins can list properties. Users can browse, save and contact brokers only.</p>
+    </div>
+  </section>
+
+  <!-- BROKERS -->
+  <section class="admin-panel" data-panel="brokers" style="display:none;">
+    <div class="admin-section">
+      <h4>Add a Broker</h4>
+      <div class="f-group">
+        <label>Broker Photo</label>
+        <div class="photo-grid" style="grid-template-columns:1fr;justify-items:center;">
+          <div id="brokerPhotoSlotWrap"></div>
+        </div>
+      </div>
+      <div class="f-group">
+        <label>Full Name</label>
+        <input class="input" id="bName" placeholder="e.g. Rakesh Mehta">
+      </div>
+      <div class="row-2">
+        <div class="f-group">
+          <label>Years of Experience</label>
+          <input class="input" id="bExp" type="number" min="0" placeholder="e.g. 8">
+        </div>
+        <div class="f-group">
+          <label>Phone Number</label>
+          <input class="input" id="bPhone" placeholder="98765 43210" maxlength="10" inputmode="numeric">
+        </div>
+      </div>
+      <div class="f-group">
+        <label>Field of Expertise</label>
+        <input class="input" id="bExpertise" placeholder="e.g. Luxury Villas & Independent Houses">
+      </div>
+      <div class="f-group">
+        <label>Short Bio</label>
+        <textarea class="input" id="bBio" rows="3" maxlength="220" placeholder="A short, descriptive bio buyers will see on the property page"></textarea>
+        <p class="hint" id="bBioCount">0/220</p>
+      </div>
+      <button class="btn-fill" id="addBrokerBtn" style="width:100%;padding:13px;border-radius:10px;">Add Broker</button>
+
+      <h4>Current Brokers</h4>
+      <div id="brokerListWrap"></div>
+    </div>
+  </section>
+
+  <!-- LISTINGS -->
+  <section class="admin-panel" data-panel="listings" style="display:none;">
+    <div class="admin-section">
+      <h4>All Listings — Assign a Broker</h4>
+      <div id="listingsWrap"></div>
+    </div>
+  </section>
+</div>
+
+<script src="js/icons.js"></script>
+<script src="js/data.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

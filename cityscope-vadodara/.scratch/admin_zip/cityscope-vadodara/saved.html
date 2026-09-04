@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Saved Properties — Cityscope Vadodara</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <button class="icon-btn" id="backBtn"></button>
+    <div class="brand">
+      <div class="brand-name">CITYSCOPE</div>
+      <div class="brand-sub">VADODARA</div>
+    </div>
+    <span style="width:38px;"></span>
+  </div>
+
+  <div class="page-title-bar">
+    <h1>Saved Properties</h1>
+    <p id="resultCount"></p>
+  </div>
+
+  <div class="prop-list" id="listWrap"></div>
+
+  <nav class="bottom-nav" id="bottom-nav"></nav>
+</div>
+
+<script src="js/icons.js"></script>
+<script src="js/data.js"></script>
+<script src="js/nav.js"></script>
+<script>
+  mountBottomNav("saved");
+  document.getElementById("backBtn").innerHTML = ICON.back;
+  document.getElementById("backBtn").onclick = ()=> window.location.href="index.html";
+
+  function render(){
+    const list = DB.savedProperties();
+    document.getElementById("resultCount").textContent = `${list.length} propert${list.length===1?'y':'ies'} saved`;
+    document.getElementById("listWrap").innerHTML = list.length ? list.map(p=>propCardHTML(p,true)).join("") : `
+      <div class="empty">
+        <div class="ic-wrap">${ICON.heart}</div>
+        <h3>No saved properties yet</h3>
+        <p>Tap the heart icon on any listing to save it here for quick access later.</p>
+      </div>`;
+    wireFavButtons();
+    document.querySelectorAll("[data-fav]").forEach(btn=>{
+      btn.addEventListener("click", ()=> setTimeout(render, 200));
+    });
+  }
+  render();
+</script>
+</body>
+</html>
